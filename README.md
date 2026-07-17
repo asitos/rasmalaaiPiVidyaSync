@@ -13,26 +13,20 @@ the project completely bypasses cloud runners (like github actions) in favor of 
 - **host environment:** raspberry pi 3b+ (arm64)
 - **execution engine:** python3 (gspread, oauth2) wrapped in bash
 - **automation:** native `systemd` timers (cron replacement)
-- **data pipeline:** google sheets api -> regex payload injection -> automated git push
+- **data pipeline:** google sheets api -> raw 2d-matrix parsing -> regex payload injection -> automated git push
+- **ci/cd layer:** isolated github action runner to enforce linting and static syntax compilation checks
 
 ## deployment pipeline
 
 the daemon is designed to run in a strict, isolated environment to prevent pacman dependency conflicts on arch/debian systems.
 
 ```bash
-# 1. clone and isolate
 git clone [https://github.com/asitos/rasmalaaiPiVidyaSync.git](https://github.com/asitos/rasmalaaiPVidyaiSync.git)
 cd rasmalaaiPiVidyaSync
 python -m venv venv
 
-# for bash, change to activate.fish for a fish shell
-source venv/bin/activate 
-
-# 2. install dependencies
-pip install -r requirements.txt
-
-# 3. provide google cloud credentials
-# place your service account key at the root: ./credentials.json
+make env
+make test
 ```
 
 ## systemd integration
@@ -42,7 +36,7 @@ to run invisibly, the bash wrapper is handed off to the linux kernel's init syst
 1. service file (/etc/systemd/system/vidyad.service)
 ```ini
 [Unit]
-Description=rasmalaaiPiVidyaSync GitHub Telemetry
+Description=rasmalaaiPiVidyaSync github telemetry
 After=network.target
 
 [Service]
@@ -52,16 +46,15 @@ ExecStart=/path/to/rasmalaaiPiVidyaSync/run_sync.sh
 
 ```
 
-2. arming the daemon
+2. automated target deployment
 ```bash
-sudo systemctl daemon-reload
-sudo systemctl enable --now vidyad.timer
+sudo make systemd-install
 ```
 
 ## security & state management
-* **headless git operations:** script autonomously handles `git pull`, `git add`, `git commit`, and `git push` via ssh keys, checking the ``--porcelain`` status to prevent empty commits.
 
-* **secret management:** google cloud service account keys (`credentials.json`) are strictly ignored via `.gitignore` and handled locally on the pi.
+- **headless git execution**: script tracks the repository state using `--porcelain` arguments to evaluate dirty work trees natively before initiating upstream updates.
 
-* **fault tolerance:** native `gspread` header arrays are bypassed in favor of raw 2d array mapping to prevent index crashing on phantom google sheets columns.
+- **secret abstraction**: token payloads (`credentials.json`) are hard-isolated out of version tracking via strict workspace `.gitignore` rules.
 
+- **fault tolerance**: internal `gspread` headers are bypassed entirely in favor of native multi-dimensional indexing to handle empty or duplicate google sheet data boundaries.
