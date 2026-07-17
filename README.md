@@ -5,7 +5,8 @@ a resource-optimized, bare-metal telemetry daemon and serverless edge rendering 
 it interfaces an asynchronous google sheets database with localized linux init systems, extracting multi-dimensional arrays and pushing raw json state to version control. a decoupled serverless edge api then intercepts this state and dynamically compiles a scalable svg matrix to inject deterministic visual updates directly into my profile `readme.md`.
 
 i had a lot of video game data lying around for more than 2 years, figured making use of it by displaying it on my profile would give me some sense of productivity instead of being autistically fixated on logging everything for reasons i dont know. 
-**spreadsheet here**: https://docs.google.com/spreadsheets/d/1W9je3_pr-Pd608ET2m4Zm-GTyg7kLzrdRGCktyuXpXk/edit?usp=sharing.
+
+* **spreadsheet here**: https://docs.google.com/spreadsheets/d/1W9je3_pr-Pd608ET2m4Zm-GTyg7kLzrdRGCktyuXpXk/edit?usp=sharing.
 
 the project currently only works for my personal spreadsheet, could add options for more configurations in future.
 
