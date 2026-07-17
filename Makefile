@@ -11,7 +11,7 @@ all: env
 env:
 	@echo "==> Building native virtual environment..."
 	python3 -m venv $(PREFIX)/venv
-	$(VENV_BIN)/pip install -r requirements.txt
+	$(VENV_BIN)/pip install -r $(PREFIX)/daemon/requirements.txt
 
 test:
 	@echo "==> Executing runtime engine simulation..."

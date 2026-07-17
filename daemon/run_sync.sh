@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # --- CONFIGURATION ---
-DAEMON_DIR="/home/asitos/Projects/rasmalaaiPiVidyaSync"
+DAEMON_DIR="/home/asitos/Projects/rasmalaaiPiVidyaSync/daemon"
 REPO_DIR="/home/asitos/Projects/asitos"
 # ---------------------
 
