@@ -71,7 +71,7 @@ docker run --rm -v $(pwd)/credentials.json:/app/credentials.json rasmalaai-vidya
 
 ## systemd integration
 
-to run invisibly, the bash wrapper is handed off to the linux kernel's init system.
+ran invisibly, the bash wrapper is handed off to the linux kernel's init system.
 
 1. service file (/etc/systemd/system/vidyad.service)
 ```ini
@@ -81,8 +81,10 @@ After=network.target
 
 [Service]
 Type=oneshot
-User=asitos
-ExecStart=/path/to/rasmalaaiPiVidyaSync/daemon/run_sync.sh
+# switch out with your username
+User=asitos 
+# example path to my bash script
+ExecStart=/home/asitos/Projects/rasmalaaiPiVidyaSync/daemon/run_sync.sh
 
 ```
 
