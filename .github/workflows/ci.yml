@@ -1,0 +1,40 @@
+name: verify-runtime-architecture
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Source Payload
+      uses: actions/checkout@v4
+
+    - name: Initialize Runtime Environment
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Assert Secret Isolation (.gitignore compliance)
+      run: |
+        if [ -f "credentials.json" ]; then
+          echo "CRITICAL SECURITY BREACH: credentials.json detected in public workspace mapping."
+          exit 1
+        fi
+        echo "SUCCESS: Secret abstraction layer intact."
+
+    - name: Compile Environment Dependencies
+      run: |
+        python -m venv venv
+        source venv/bin/activate
+        pip install -r requirements.txt
+
+    - name: Execute Static Syntax Linter (Flake8)
+      run: |
+        pip install flake8
+        # Stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
