@@ -1,18 +1,40 @@
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
-import re
+import json
 import os
+import urllib.request
+import urllib.parse
 
 # --- CONFIGURATION ---
-README_PATH = "../asitos/README.md" 
 SHEET_NAME = "bideo gaym"
 WORKSHEET_NAME = "Ratings"
+RAWG_API_KEY = "97eff15a8bd14a98b1f140ae1843e639" 
+OUTPUT_JSON_PATH = os.path.join(os.path.dirname(__file__), "../telemetry.json")
 # ---------------------
+
+def get_rawg_cover_url(game_title):
+    """Queries the RAWG.io REST API to extract high-res game cover art."""
+    try:
+        encoded_title = urllib.parse.quote(game_title)
+        url = f"https://api.rawg.io/api/games?key={RAWG_API_KEY}&search={encoded_title}&page_size=1"
+        
+        req = urllib.request.Request(url, headers={'User-Agent': 'rasmalaaiPiVidyaSync-Daemon'})
+        with urllib.request.urlopen(req, timeout=10) as response:
+            res_data = json.loads(response.read().decode())
+            results = res_data.get("results", [])
+            if results and results[0].get("background_image"):
+                return results[0]["background_image"]
+    except Exception as e:
+        print(f"WARNING: Failed to fetch art for '{game_title}': {e}")
+    
+    return "https://images.unsplash.com/photo-1538481199705-c710c4e965fc"
 
 def get_top_games():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-    creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+    creds = ServiceAccountCredentials.from_json_keyfile_name(
+        os.path.join(os.path.dirname(__file__), "..", "credentials.json"), scope
+    )
     client = gspread.authorize(creds)
 
     sheet = client.open(SHEET_NAME).worksheet(WORKSHEET_NAME)
@@ -26,11 +48,9 @@ def get_top_games():
             break
             
     headers = [str(h).strip().lower() for h in raw_data[header_index]]
-    
     records = [dict(zip(headers, row)) for row in raw_data[header_index + 1:]]
 
     valid_games = []
-    
     for row in records:
         date_str = str(row.get("date finished", "")).strip()
         if date_str:
@@ -44,41 +64,32 @@ def get_top_games():
     valid_games.sort(key=lambda x: x['parsed_date'], reverse=True)
     return valid_games[:4]
 
-def generate_markdown(games):
-    md = "```text\n"
-    md += f"{'[DATE]'.ljust(10)} {'[TITLE]'.ljust(42)} {'[RATING]'.ljust(9)} {'[TIME]'}\n"
-    md += "-" * 70 + "\n"
-    
-    for game in games:
-        date_str = str(game.get("date finished", ""))
-        title = str(game.get("finished", ""))[:40] 
-        rating = str(game.get("rating", ""))
-        time = str(game.get("hours played", "")) + "h"
-        
-        md += f"{date_str.ljust(10)} {title.ljust(42)} {rating.ljust(9)} {time}\n"
-    
-    md += "```"
-    return md
-
-def update_readme(markdown_content):
-    with open(README_PATH, 'r') as file:
-        readme_data = file.read()
-
-    pattern = r"(<!-- GAMES:START -->\n).*?(<!-- GAMES:END -->)"
-    replacement = rf"\1{markdown_content}\n\2"
-    
-    new_readme = re.sub(pattern, replacement, readme_data, flags=re.DOTALL)
-
-    with open(README_PATH, 'w') as file:
-        file.write(new_readme)
-    print("SUCCESS: README.md telemetry updated locally.")
-
 if __name__ == "__main__":
-    print("Fetching telemetry from Google Sheets...")
+    print("Fetching sheet logs from Google Cloud...")
     top_games = get_top_games()
     
-    print("Formatting terminal block...")
-    markdown_block = generate_markdown(top_games)
+    telemetry_payload = []
     
-    print("Injecting into README.md...")
-    update_readme(markdown_block)
+    print("Syncing cover art vectors from RAWG.io...")
+    for game in top_games:
+        title = str(game.get("finished", "")).strip()
+        date_str = str(game.get("date finished", "")).strip()
+        rating = str(game.get("rating", "")).strip()
+        time_played = str(game.get("hours played", "")).strip() + "h"
+        
+        print(f"  -> resolving artifacts for: {title}")
+        cover_url = get_rawg_cover_url(title)
+        
+        telemetry_payload.append({
+            "title": title,
+            "date": date_str,
+            "rating": rating,
+            "time": time_played,
+            "cover_url": cover_url
+        })
+        
+    print(f"Writing state compilation to {OUTPUT_JSON_PATH}...")
+    with open(OUTPUT_JSON_PATH, 'w') as f:
+        json.dump(telemetry_payload, f, indent=2)
+        
+    print("SUCCESS: State machine synchronization sequence completed.")
