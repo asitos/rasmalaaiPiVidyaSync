@@ -8,11 +8,22 @@ i had a lot of video game data lying around for more than 2 years, figured makin
 
 the project currently only works for my personal spreadsheet, could add options for more configurations in future.
 
-## demo output
-> card reflecting recently archived telemetry
+## evolution & demo output
+
+this project started as a brute-force text script before evolving into a fully decoupled edge rendering pipeline. 
+
+### v1.0: the prototype (markdown injection)
+> the original python daemon used regex to dynamically overwrite the file tree, injecting a raw markdown table directly between `<!-- GAMES:START -->` html comments in my profile's readme.
+<div align="center">
+  <img src="./assets/prototype.png" alt="legacy text-based injection" width="100%" />
+  <p><i>v1.0: legacy text-based database injection</i></p>
+</div>
+
+### v2.0: the edge-rendered matrix (current)
+> the upgraded architecture completely bypasses regex injection. the bare-metal daemon now outputs a clean `json` state, and the vercel edge api intercepts it to natively compile a responsive tokyonight svg grid on the fly.
 <div align="center">
   <img src="./assets/card.png" alt="recently played vidya" width="100%" />
-  <p><i>recently played vidya</i></p>
+  <p><i>v2.0: recently played vidya</i></p>
 </div>
 
 ## systems architecture
