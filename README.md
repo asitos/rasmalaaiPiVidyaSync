@@ -4,6 +4,8 @@ a zero-maintenance, bare-metal telemetry daemon built for the rasmalaaiPi ecosys
 
 it bridges an offline google sheets database with github's api, autonomously parsing game completion data, formatting it into a monospace terminal ui, and managing git state to inject real-time updates directly into my github profile `README.md`.
 
+i had a lot of video game data lying around for more than 2 years, figured making use of it by displaying it on my profile would give me some sense of productivity instead of being autistically fixated on logging everything for reasons i dont know. ![spreadsheet here](https://docs.google.com/spreadsheets/d/1W9je3_pr-Pd608ET2m4Zm-GTyg7kLzrdRGCktyuXpXk/edit?usp=sharing).
+
 ## systems architecture
 
 the project completely bypasses cloud runners (like github actions) in favor of a localized, natively hosted linux daemon. 

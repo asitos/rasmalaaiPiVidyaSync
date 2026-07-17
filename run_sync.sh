@@ -2,7 +2,7 @@
 
 # --- CONFIGURATION ---
 DAEMON_DIR="/home/asitos/Projects/rasmalaaiPiVidyaSync"
-REPO_DIR="../asitos/README.md"
+REPO_DIR="/home/asitos/Projects/asitos"
 # ---------------------
 
 echo "[$(date)] starting rasmalaaiPiVidyaSync telemetry update..."
