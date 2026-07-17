@@ -6,7 +6,7 @@ it interfaces an asynchronous google sheets database backend with localized linu
 
 i had a lot of video game data lying around for more than 2 years, figured making use of it by displaying it on my profile would give me some sense of productivity instead of being autistically fixated on logging everything for reasons i dont know. ![spreadsheet here](https://docs.google.com/spreadsheets/d/1W9je3_pr-Pd608ET2m4Zm-GTyg7kLzrdRGCktyuXpXk/edit?usp=sharing).
 
-the python scripts currently works for a format that is similar to my spreadsheet for now, could add options for more versatality in future.
+the python script currently only works for a format that is similar to my spreadsheet, could add options for more configuration in future.
 
 ## systems architecture
 
