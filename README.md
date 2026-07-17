@@ -60,6 +60,15 @@ npn run dev
 # deployment card is hosted at https://localhost:3000/api/card
 ```
 
+### docker deployment 
+the python aggregator is fully containerized for isolated execution outside of the `systemd` pipeline.
+
+```bash
+cd daemon
+docker build -t rasmalaai-vidya-sync .
+docker run --rm -v $(pwd)/credentials.json:/app/credentials.json rasmalaai-vidya-sync
+```
+
 ## systemd integration
 
 to run invisibly, the bash wrapper is handed off to the linux kernel's init system.
