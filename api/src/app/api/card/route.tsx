@@ -5,7 +5,7 @@ export const runtime = 'edge';
 
 export async function GET(req: NextRequest) {
   try {
-    const url = 'https://raw.githubusercontent.com/asitos/rasmalaaiPiVidyaSync/main/telemetry.json';
+    const url = 'https://raw.githubusercontent.com/asitos/rasmalaaiPiVidyaSync/feat/edge-svg-renderer/telemetry.json';
     const response = await fetch(url, { next: { revalidate: 0 } });
     
     if (!response.ok) {
@@ -29,8 +29,9 @@ export async function GET(req: NextRequest) {
             fontFamily: 'monospace',
           }}
         >
+          {/* forcing single strings bypasses the multi-child satori panic */}
           <div style={{ display: 'flex', color: '#9ece6a', fontSize: '24px', marginBottom: '30px' }}>
-            👾 telemetry: recent digital archives
+            {'👾 telemetry: recent digital archives'}
           </div>
           
           <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', width: '100%' }}>
@@ -49,7 +50,7 @@ export async function GET(req: NextRequest) {
                 />
                 <div 
                   style={{ 
-                    display: 'flex', // <-- SATORI FIX: strict layout declaration
+                    display: 'flex', 
                     color: '#c0caf5', 
                     fontSize: '18px', 
                     fontWeight: 'bold',
@@ -58,17 +59,18 @@ export async function GET(req: NextRequest) {
                     overflow: 'hidden' 
                   }}
                 >
-                  {game.title}
+                  {`${game.title}`}
                 </div>
                 <div 
                   style={{ 
-                    display: 'flex', // <-- SATORI FIX: strict layout declaration
+                    display: 'flex', 
                     color: '#7aa2f7', 
                     fontSize: '14px', 
                     marginTop: '6px' 
                   }}
                 >
-                  rating: {game.rating} • {game.time}
+                  {/* fix: wrapped inside a single template string */}
+                  {`rating: ${game.rating} • ${game.time}`}
                 </div>
               </div>
             ))}
