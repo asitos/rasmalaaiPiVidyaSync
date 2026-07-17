@@ -30,8 +30,8 @@ export async function GET(req: NextRequest) {
           }}
         >
           {/* forcing single strings bypasses the multi-child satori panic */}
-          <div style={{ display: 'flex', color: '#9ece6a', fontSize: '24px', marginBottom: '30px' }}>
-            {'👾 telemetry: recent digital archives'}
+          <div style={{ display: 'flex', align: 'center', color: '#9ece6a', fontSize: '24px', marginBottom: '30px' }}>
+            {'recently played vidya'}
           </div>
           
           <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', width: '100%' }}>
