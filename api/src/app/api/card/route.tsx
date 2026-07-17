@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
           }}
         >
           {/* forcing single strings bypasses the multi-child satori panic */}
-          <div style={{ display: 'flex', align: 'center', color: '#9ece6a', fontSize: '24px', marginBottom: '30px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', color: '#9ece6a', fontSize: '24px', marginBottom: '30px' }}>
             {'recently played vidya'}
           </div>
           
