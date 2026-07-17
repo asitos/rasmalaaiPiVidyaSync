@@ -1,10 +1,12 @@
 # rasmalaaiPiVidyaSync 
 
-a zero-maintenance, bare-metal telemetry daemon built for the rasmalaaiPi ecosystem. 
+a resource-optimized, bare-metal telemetry daemon built natively for the rasmalaaiPi ecosystem. 
 
-it bridges an offline google sheets database with github's api, autonomously parsing game completion data, formatting it into a monospace terminal ui, and managing git state to inject real-time updates directly into my github profile `README.md`.
+it interfaces an asynchronous google sheets database backend with localized linux init systems, autonomously querying data pipelines, generating fixed-width monospace terminal visuals, and orchestrating git state engines to inject deterministic updates directly into my profile `readme.md`.
 
 i had a lot of video game data lying around for more than 2 years, figured making use of it by displaying it on my profile would give me some sense of productivity instead of being autistically fixated on logging everything for reasons i dont know. ![spreadsheet here](https://docs.google.com/spreadsheets/d/1W9je3_pr-Pd608ET2m4Zm-GTyg7kLzrdRGCktyuXpXk/edit?usp=sharing).
+
+the python scripts currently works for a format that is similar to my spreadsheet for now, could add options for more versatality in future.
 
 ## systems architecture
 
