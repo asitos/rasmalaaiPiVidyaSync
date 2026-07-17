@@ -13,7 +13,6 @@ the project currently only works for my personal spreadsheet, could add options 
 <div align="center">
   <img src="./assets/card.png" alt="recently played vidya" width="100%" />
   <p><i>recently played vidya</i></p>
-  <br />
 </div>
 
 ## systems architecture
