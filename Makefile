@@ -15,7 +15,7 @@ env:
 
 test:
 	@echo "==> Executing runtime engine simulation..."
-	$(VENV_BIN)/python3 sync.py
+	$(VENV_BIN)/python3 daemon/sync.py
 
 systemd-install:
 	@echo "==> Installing systemd service and timer units..."
