@@ -50,12 +50,17 @@ export async function GET(req: NextRequest) {
                 />
                 <div 
                   style={{ 
-                    display: 'flex', 
+                    display: '-webkit-box', 
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: 2,
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    width: '100%',
                     color: '#c0caf5', 
                     fontSize: '18px', 
                     fontWeight: 'bold',
                     textOverflow: 'ellipsis', 
-                    whiteSpace: 'nowrap', 
+                    // whiteSpace: 'nowrap', 
                     overflow: 'hidden' 
                   }}
                 >
@@ -64,6 +69,9 @@ export async function GET(req: NextRequest) {
                 <div 
                   style={{ 
                     display: 'flex', 
+                    justifyContent: 'center',
+                    textAlign: 'center',
+                    width: '100%',
                     color: '#7aa2f7', 
                     fontSize: '14px', 
                     marginTop: '6px' 
