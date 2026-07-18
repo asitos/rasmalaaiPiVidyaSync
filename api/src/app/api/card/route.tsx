@@ -23,16 +23,18 @@ export async function GET(req: NextRequest) {
             display: 'flex',
             flexDirection: 'column',
             backgroundColor: '#1a1b26',
-            padding: '40px',
+            padding: '48px',
+            paddingTop: '20px',
             border: '2px solid #24283b',
-            borderRadius: '12px',
+            borderRadius: '16px',
             fontFamily: 'monospace',
           }}
         >
           {/* forcing single strings bypasses the multi-child satori panic */}
-          <div style={{ display: 'flex', justifyContent: 'center', color: '#9ece6a', fontSize: '24px', marginBottom: '30px' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', color: '#9aa5ce', fontSize: '24px', marginBottom: '30px', paddingBottom: '20px' }}>
             {'recently played vidya'}
           </div>
+          <br />
           
           <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', width: '100%' }}>
             {games.slice(0, 4).map((game: any, index: number) => (
