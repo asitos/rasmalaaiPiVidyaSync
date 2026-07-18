@@ -25,6 +25,7 @@ export async function GET(req: NextRequest) {
             backgroundColor: '#1a1b26',
             padding: '48px',
             paddingTop: '20px',
+            paddingBottom: '20px',
             border: '2px solid #24283b',
             borderRadius: '16px',
             fontFamily: 'monospace',
