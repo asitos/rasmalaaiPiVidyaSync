@@ -19,7 +19,7 @@ export async function GET() {
         style={{ 
           display: 'flex', 
           flexDirection: 'column', 
-          width: '244px', // 240px image + 2px left border + 2px right border
+          width: '244px', 
           border: '2px solid #7aa2f7',
           backgroundColor: '#16161e',
         }}
@@ -29,7 +29,7 @@ export async function GET() {
           width={240}
           height={320}
           style={{
-            width: '240px', // Exact image width
+            width: '240px',
             height: '320px',
             objectFit: 'cover',
             borderBottom: '2px solid #7aa2f7',
@@ -73,11 +73,12 @@ export async function GET() {
       </div>
     );
 
-    const CommandPrompt = ({ command }: { command: string }) => (
+    const CommandPrompt = ({ command, showTime }: { command: string, showTime?: boolean }) => (
       <div style={{ 
         display: 'flex', 
         flexDirection: 'row', 
         alignItems: 'center', 
+        justifyContent: 'space-between',
         marginBottom: '24px', 
         width: '100%', 
         backgroundColor: '#16161e', 
@@ -86,8 +87,18 @@ export async function GET() {
         fontSize: '20px',
         lineHeight: 1.2,
       }}>
-        <span style={{ color: '#7aa2f7', fontWeight: 700, marginRight: '12px' }}>asitos@rasmalaai-pi:~$</span>
-        <span style={{ color: '#ffffff', fontWeight: 700 }}>{command}</span>
+        <div style={{ display: 'flex', flexDirection: 'row' }}>
+          <span style={{ color: '#7aa2f7', fontWeight: 700, marginRight: '12px' }}>asitos@rasmalaai-pi:~$</span>
+          <span style={{ color: '#ffffff', fontWeight: 700 }}>
+            {command}
+            <span style={{ color: '#fe9e64' }}>_</span>
+          </span>
+        </div>
+        {showTime && (
+          <div style={{ display: 'flex', color: '#7aa2f7', fontSize: '16px', fontWeight: 700 }}>
+            {`[SYNC: ${new Date().toISOString().replace('T', ' ').substring(0, 16)} Z]`}
+          </div>
+        )}
       </div>
     );
 
@@ -105,7 +116,7 @@ export async function GET() {
       >
         {current && (
           <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '24px' }}>
-            <CommandPrompt command="./fetch_telemetry --status playing" />
+            <CommandPrompt command="./fetch_telemetry --status playing" showTime={true} />
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
               <GameCard game={current} isCurrent={true} />
             </div>
@@ -141,7 +152,30 @@ export async function GET() {
       }
     );
 
-    return new Response(svg, {
+    const finalSvg = svg.replace(
+      '</svg>',
+      `
+        <defs>
+          <pattern id="scanlines" patternUnits="userSpaceOnUse" width="4" height="4">
+            <rect width="4" height="2" fill="#000000" fill-opacity="0.0" />
+            <rect y="2" width="4" height="2" fill="#000000" fill-opacity="0.15" />
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#scanlines)" pointer-events="none" />
+        <style>
+          @keyframes blink { 
+            0%, 100% { opacity: 1; } 
+            50% { opacity: 0; } 
+          }
+          text[fill="#fe9e64"] { 
+            animation: blink 1s step-end infinite; 
+          }
+        </style>
+      </svg>
+      `
+    );
+
+    return new Response(finalSvg, {
       headers: {
         'Content-Type': 'image/svg+xml',
         'Cache-Control': 'public, max-age=60, s-maxage=60',
