@@ -123,7 +123,7 @@ export async function GET() {
       </div>,
       {
         width: 880,
-        height: current ? 1650 : 1130,
+        height: current ? 1580 : 1060,
         fonts: [
           {
             name: 'Hack',
