@@ -51,7 +51,7 @@ export async function GET() {
               fontFamily: 'Terminess',
               fontWeight: 700,
               textTransform: 'uppercase',
-              lineHeight: 1.3,
+              lineHeight: 1.2,
               marginBottom: '10px',
             }}
           >
@@ -64,6 +64,7 @@ export async function GET() {
               fontSize: '14px', 
               fontFamily: 'Terminess',
               fontWeight: 700,
+              lineHeight: 1.2,
             }}
           >
             {isCurrent ? `[STATUS: PLAYING]  [${game.time.toUpperCase()}]` : `RATING: ${game.rating}  [${game.time.toUpperCase()}]`}
@@ -82,9 +83,10 @@ export async function GET() {
         backgroundColor: '#16161e', 
         border: '1px solid #7aa2f7', 
         padding: '14px 18px',
-        fontSize: '18px'
+        fontSize: '18px',
+        lineHeight: 1.2,
       }}>
-        <span style={{ color: '#9ece6a', fontWeight: 700, marginRight: '12px' }}>asitos@pi:~$</span>
+        <span style={{ color: '#7aa2f7', fontWeight: 700, marginRight: '12px' }}>asitos@rasmalaai-pi:~$</span>
         <span style={{ color: '#ffffff', fontWeight: 700 }}>{command}</span>
       </div>
     );
@@ -124,7 +126,7 @@ export async function GET() {
       </div>,
       {
         width: 870,
-        height: current ? 1450 : 930,
+        height: current ? 1475 : 974,
         fonts: [
           {
             name: 'Terminess',
