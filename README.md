@@ -20,10 +20,16 @@ this project started as a brute-force text script before evolving into a fully d
   <img src="./assets/prototype.png" alt="legacy text-based injection" width="100%" />
 </div>
 
-### v2.0: headless edge rendering (current)
-> the daemon now strictly serializes state to a bundled JSON artifact (`api/telemetry.json`), dropping all git-injection responsibilities. Next.js statically builds the state into an offline-ready, fully cached SVG without external runtime dependencies.
+### v2.0: headless edge rendering
+> the daemon abandoned git-injection responsibilities, strictly serializing state to a bundled JSON artifact (`api/telemetry.json`). Next.js statically builds the state into an offline-ready, fully cached SVG without external runtime dependencies.
 <div align="center">
   <img src="./assets/card.png" alt="satori edge rendering demo" width="100%" />
+</div>
+
+### v3.0: terminal ui redesign (current)
+> completely overhauled the visual representation into a retro CRT terminal-inspired grid. the SVG natively incorporates a CSS-animated blinking block cursor, transparent scanline overlays, dynamic layout scaling, and mathematically perfect geometry using Hack Nerd Font.
+<div align="center">
+  <img src="./assets/cardV3.svg" alt="v3 terminal redesign demo" width="100%" />
 </div>
 
 ---
