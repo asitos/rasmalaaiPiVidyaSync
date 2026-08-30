@@ -19,7 +19,7 @@ export async function GET() {
         style={{ 
           display: 'flex', 
           flexDirection: 'column', 
-          width: '240px', 
+          width: '244px', // 240px image + 2px left border + 2px right border
           border: '2px solid #7aa2f7',
           backgroundColor: '#16161e',
         }}
@@ -29,7 +29,7 @@ export async function GET() {
           width={240}
           height={320}
           style={{
-            width: '240px',
+            width: '240px', // Exact image width
             height: '320px',
             objectFit: 'cover',
             borderBottom: '2px solid #7aa2f7',
@@ -122,7 +122,7 @@ export async function GET() {
         </div>
       </div>,
       {
-        width: 880,
+        width: 876,
         height: current ? 1531 : 1018,
         fonts: [
           {
