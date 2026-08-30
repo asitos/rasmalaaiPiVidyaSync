@@ -97,12 +97,15 @@ export async function GET() {
           display: 'flex',
           flexDirection: 'column',
           backgroundColor: '#1a1b26',
-          padding: '48px',
+          paddingTop: '36px',
+          paddingBottom: '36px',
+          paddingLeft: '48px',
+          paddingRight: '48px',
           fontFamily: 'Terminess',
         }}
       >
         {current && (
-          <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '48px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '24px' }}>
             <CommandPrompt command="./fetch_telemetry --status playing" />
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
               <GameCard game={current} isCurrent={true} />
@@ -121,7 +124,7 @@ export async function GET() {
       </div>,
       {
         width: 870,
-        height: current ? 1500 : 980,
+        height: current ? 1450 : 930,
         fonts: [
           {
             name: 'Terminess',
