@@ -5,8 +5,8 @@ import data from '../../../../telemetry.json';
 
 export async function GET() {
   try {
-    const fontMediumPath = path.join(process.cwd(), 'src/assets/TerminessNerdFontMono-Regular.ttf');
-    const fontBoldPath = path.join(process.cwd(), 'src/assets/TerminessNerdFontMono-Bold.ttf');
+    const fontMediumPath = path.join(process.cwd(), 'src/assets/HackNerdFontMono-Regular.ttf');
+    const fontBoldPath = path.join(process.cwd(), 'src/assets/HackNerdFontMono-Bold.ttf');
     const fontMedium = fs.readFileSync(fontMediumPath);
     const fontBold = fs.readFileSync(fontBoldPath);
 
@@ -48,7 +48,7 @@ export async function GET() {
               display: 'flex',
               color: isCurrent ? '#ff9e64' : '#ffffff', 
               fontSize: '18px', 
-              fontFamily: 'Terminess',
+              fontFamily: 'Hack',
               fontWeight: 700,
               textTransform: 'uppercase',
               lineHeight: 1.2,
@@ -62,7 +62,7 @@ export async function GET() {
               display: 'flex', 
               color: '#e7ddff', 
               fontSize: '16px', 
-              fontFamily: 'Terminess',
+              fontFamily: 'Hack',
               fontWeight: 700,
               lineHeight: 1.2,
             }}
@@ -100,7 +100,7 @@ export async function GET() {
           flexDirection: 'column',
           backgroundColor: '#1a1b26',
           padding: '48px',
-          fontFamily: 'Terminess',
+          fontFamily: 'Hack',
         }}
       >
         {current && (
@@ -126,13 +126,13 @@ export async function GET() {
         height: current ? 1531 : 1018,
         fonts: [
           {
-            name: 'Terminess',
+            name: 'Hack',
             data: fontMedium,
             weight: 400,
             style: 'normal',
           },
           {
-            name: 'Terminess',
+            name: 'Hack',
             data: fontBold,
             weight: 700,
             style: 'normal',
