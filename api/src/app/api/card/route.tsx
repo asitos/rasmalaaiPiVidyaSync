@@ -60,7 +60,7 @@ export async function GET() {
           <div 
             style={{ 
               display: 'flex', 
-              color: '#9aa5ce', 
+              color: '#e7ddff', 
               fontSize: '16px', 
               fontFamily: 'Terminess',
               fontWeight: 700,
