@@ -53,6 +53,7 @@ export async function GET() {
                 style={{ 
                   display: 'flex', 
                   flexDirection: 'column',
+                  alignItems: 'center',
                   justifyContent: 'center',
                   textAlign: 'center',
                   width: '100%',
