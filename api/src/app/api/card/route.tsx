@@ -39,7 +39,7 @@ export async function GET() {
           style={{ 
             display: 'flex', 
             flexDirection: 'column',
-            padding: '12px',
+            padding: '16px',
             width: '100%',
           }}
         >
@@ -47,12 +47,12 @@ export async function GET() {
             style={{ 
               display: 'flex',
               color: isCurrent ? '#ff9e64' : '#c0caf5', 
-              fontSize: '14px', 
+              fontSize: '15px', 
               fontFamily: 'JetBrains Mono',
               fontWeight: 700,
               textTransform: 'uppercase',
-              lineHeight: 1.2,
-              marginBottom: '8px',
+              lineHeight: 1.3,
+              marginBottom: '10px',
             }}
           >
             {`> ${game.title}`}
@@ -73,8 +73,18 @@ export async function GET() {
     );
 
     const CommandPrompt = ({ command }: { command: string }) => (
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginBottom: '20px', width: '100%', backgroundColor: '#1a1b26', border: '1px solid #414868', padding: '10px' }}>
-        <span style={{ color: '#9ece6a', fontWeight: 700, marginRight: '8px' }}>asitos@pi:~$</span>
+      <div style={{ 
+        display: 'flex', 
+        flexDirection: 'row', 
+        alignItems: 'center', 
+        marginBottom: '24px', 
+        width: '100%', 
+        backgroundColor: '#16161e', 
+        border: '1px solid #414868', 
+        padding: '12px 16px',
+        fontSize: '15px'
+      }}>
+        <span style={{ color: '#9ece6a', fontWeight: 700, marginRight: '10px' }}>asitos@pi:~$</span>
         <span style={{ color: '#c0caf5', fontWeight: 400 }}>{command}</span>
       </div>
     );
@@ -87,12 +97,12 @@ export async function GET() {
           display: 'flex',
           flexDirection: 'column',
           backgroundColor: '#1a1b26',
-          padding: '40px',
+          padding: '48px',
           fontFamily: 'JetBrains Mono',
         }}
       >
         {current && (
-          <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '40px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', marginBottom: '48px' }}>
             <CommandPrompt command="./fetch_telemetry --status playing" />
             <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', width: '100%' }}>
               <GameCard game={current} isCurrent={true} />
@@ -102,7 +112,7 @@ export async function GET() {
         
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <CommandPrompt command="cat /var/log/vidya/recent.log" />
-          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: '20px', width: '100%' }}>
+          <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: '24px', width: '100%' }}>
             {games.slice(0, 6).map((game: any, index: number) => (
               <GameCard key={index} game={game} />
             ))}
@@ -110,8 +120,8 @@ export async function GET() {
         </div>
       </div>,
       {
-        width: 840,
-        height: current ? 1420 : 940,
+        width: 870,
+        height: current ? 1500 : 980,
         fonts: [
           {
             name: 'JetBrains Mono',
