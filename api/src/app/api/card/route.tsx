@@ -1,17 +1,63 @@
 import satori from 'satori';
 import fs from 'fs';
 import path from 'path';
-import games from '../../../../telemetry.json';
-
-// We disable static generation because we want it to fetch the LATEST bundled telemetry if deployed.
-// Actually, if we use import, the data is baked in at build time. 
-// A static route is fine, it will serve the SVG built at deployment time!
+import data from '../../../../telemetry.json';
 
 export async function GET() {
   try {
-    // Read the font
     const fontPath = path.join(process.cwd(), 'src/assets/Roboto-Regular.ttf');
     const fontData = fs.readFileSync(fontPath);
+
+    // Fallback for transition between array and object schemas
+    const games = Array.isArray(data) ? data : (data.games || []);
+    const current = Array.isArray(data) ? null : data.current;
+
+    const GameCard = ({ game, isCurrent }: { game: any, isCurrent?: boolean }) => (
+      <div style={{ display: 'flex', flexDirection: 'column', width: '220px', alignItems: 'center' }}>
+        <img
+          src={game.cover_url}
+          width={220}
+          height={300}
+          style={{
+            width: '220px',
+            height: '300px',
+            objectFit: 'cover',
+            borderRadius: '8px',
+            marginBottom: '12px',
+            border: '2px solid #414868',
+          }}
+        />
+        <div 
+          style={{ 
+            display: 'flex', 
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            width: '100%',
+            color: '#c0caf5', 
+            fontSize: isCurrent ? '20px' : '18px', 
+            fontWeight: 'bold',
+            overflow: 'hidden' 
+          }}
+        >
+          {`${game.title}`}
+        </div>
+        <div 
+          style={{ 
+            display: 'flex', 
+            justifyContent: 'center',
+            textAlign: 'center',
+            width: '100%',
+            color: '#7aa2f7', 
+            fontSize: '14px', 
+            marginTop: '6px' 
+          }}
+        >
+          {isCurrent ? `currently playing • ${game.time}` : `rating: ${game.rating} • ${game.time}`}
+        </div>
+      </div>
+    );
 
     const svg = await satori(
       <div
@@ -20,71 +66,36 @@ export async function GET() {
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
+          alignItems: 'center',
           backgroundColor: '#1a1b26',
           padding: '48px',
-          paddingTop: '20px',
-          paddingBottom: '20px',
           border: '2px solid #24283b',
           borderRadius: '16px',
           fontFamily: 'Roboto',
         }}
       >
-        <div style={{ display: 'flex', justifyContent: 'center', color: '#9aa5ce', fontSize: '24px', marginBottom: '30px', paddingBottom: '20px' }}>
+        {current && (
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '40px' }}>
+            <div style={{ display: 'flex', justifyContent: 'center', color: '#ff9e64', fontSize: '24px', marginBottom: '24px' }}>
+              {'currently playing'}
+            </div>
+            <GameCard game={current} isCurrent={true} />
+          </div>
+        )}
+        
+        <div style={{ display: 'flex', justifyContent: 'center', color: '#9aa5ce', fontSize: '24px', marginBottom: '30px' }}>
           {'recently played vidya'}
         </div>
         
-        <div style={{ display: 'flex', flexDirection: 'row', gap: '20px', width: '100%' }}>
-          {games.slice(0, 4).map((game: any, index: number) => (
-            <div key={index} style={{ display: 'flex', flexDirection: 'column', width: '210px' }}>
-              <img
-                src={game.cover_url}
-                width={210}
-                height={290}
-                style={{
-                  width: '210px',
-                  height: '290px',
-                  objectFit: 'cover',
-                  borderRadius: '8px',
-                  marginBottom: '12px',
-                  border: '2px solid #414868',
-                }}
-              />
-              <div 
-                style={{ 
-                  display: 'flex', 
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  textAlign: 'center',
-                  width: '100%',
-                  color: '#c0caf5', 
-                  fontSize: '18px', 
-                  fontWeight: 'bold',
-                  overflow: 'hidden' 
-                }}
-              >
-                {`${game.title}`}
-              </div>
-              <div 
-                style={{ 
-                  display: 'flex', 
-                  justifyContent: 'center',
-                  textAlign: 'center',
-                  width: '100%',
-                  color: '#7aa2f7', 
-                  fontSize: '14px', 
-                  marginTop: '6px' 
-                }}
-              >
-                {`rating: ${game.rating} • ${game.time}`}
-              </div>
-            </div>
+        <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: '30px', width: '100%' }}>
+          {games.slice(0, 6).map((game: any, index: number) => (
+            <GameCard key={index} game={game} />
           ))}
         </div>
       </div>,
       {
-        width: 1000,
-        height: 480,
+        width: 830,
+        height: current ? 1340 : 920,
         fonts: [
           {
             name: 'Roboto',
@@ -99,8 +110,6 @@ export async function GET() {
     return new Response(svg, {
       headers: {
         'Content-Type': 'image/svg+xml',
-        // Max-age 60s avoids the stale-while-revalidate first-load bug,
-        // and ensures the profile updates quickly after Vercel deployment.
         'Cache-Control': 'public, max-age=60, s-maxage=60',
       },
     });

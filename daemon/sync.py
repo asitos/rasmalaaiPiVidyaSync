@@ -29,7 +29,6 @@ def get_base64_image(url):
         req = urllib.request.Request(url, headers={'User-Agent': 'rasmalaaiPiVidyaSync-Daemon'})
         with urllib.request.urlopen(req, timeout=10) as response:
             image_data = response.read()
-            # Guess mime type based on extension or default to jpeg
             mime = "image/jpeg"
             if url.lower().endswith(".png"):
                 mime = "image/png"
@@ -58,12 +57,12 @@ def get_rawg_cover_url(game_title):
         print(f"WARNING: Failed to fetch art for '{game_title}': {e}")
     return None
 
-def get_top_games():
+def get_games_data():
     scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
     creds_path = os.path.join(BASE_DIR, "credentials.json")
     if not os.path.exists(creds_path):
         print("ERROR: credentials.json not found.")
-        return []
+        return [], None
 
     try:
         creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
@@ -72,10 +71,10 @@ def get_top_games():
         raw_data = sheet.get_all_values()
     except Exception as e:
         print(f"ERROR: Failed to connect to Google Sheets: {e}")
-        return []
+        return [], None
 
     if not raw_data:
-        return []
+        return [], None
 
     header_index = 0
     for i, row in enumerate(raw_data):
@@ -88,8 +87,21 @@ def get_top_games():
     records = [dict(zip(headers, row)) for row in raw_data[header_index + 1:]]
 
     valid_games = []
+    currently_playing = None
+    
     for row in records:
+        title = str(row.get(headers[0], "")).strip() # "finished " is usually header 0
+        if not title or title.lower() in ["incomplete / unfinished", "in playlist"]:
+            continue
+            
         date_str = str(row.get("date finished", "")).strip()
+        rolled = str(row.get("rolled credits?", "")).strip().lower()
+        
+        # Currently playing heuristic: No date finished, and credits not rolled
+        if not date_str and rolled == "no" and not currently_playing:
+            # We just take the first one that fits this description
+            currently_playing = row
+            
         if date_str:
             try:
                 parsed_date = datetime.strptime(date_str, "%d/%m/%y")
@@ -99,58 +111,74 @@ def get_top_games():
                 continue 
 
     valid_games.sort(key=lambda x: x['parsed_date'], reverse=True)
-    return valid_games[:4]
+    return valid_games[:6], currently_playing
+
+def resolve_game(game, existing_data):
+    if not game:
+        return None
+        
+    title = str(game.get(list(game.keys())[0], "")).strip()
+    date_str = str(game.get("date finished", "")).strip()
+    rating = str(game.get("rating", "")).strip()
+    time_played = str(game.get("hours played", "")).strip() + "h"
+    
+    print(f"  -> resolving artifacts for: {title}")
+    cover_url = get_rawg_cover_url(title)
+    cover_b64 = None
+    if cover_url:
+        cover_b64 = get_base64_image(cover_url)
+        
+    if not cover_b64:
+        # Try to fallback to existing data
+        fallback = next((g for g in existing_data if g.get("title") == title and g.get("cover_url", "").startswith("data:")), None)
+        if fallback:
+            cover_b64 = fallback["cover_url"]
+            print(f"  -> used cached artwork for: {title}")
+        else:
+            cover_b64 = "https://images.unsplash.com/photo-1538481199705-c710c4e965fc"
+    
+    return {
+        "title": title,
+        "date": date_str,
+        "rating": rating,
+        "time": time_played,
+        "cover_url": cover_b64
+    }
 
 if __name__ == "__main__":
     print("Fetching sheet logs from Google Cloud...")
-    top_games = get_top_games()
+    top_games, current_game = get_games_data()
     
-    telemetry_payload = []
-    
-    # Check if existing telemetry exists to use as fallback
     existing_data = []
     if os.path.exists(OUTPUT_JSON_PATH):
         try:
             with open(OUTPUT_JSON_PATH, 'r') as f:
-                existing_data = json.load(f)
+                data = json.load(f)
+                existing_data = data.get("games", [])
+                if data.get("current"):
+                    existing_data.append(data["current"])
         except:
             pass
 
     print("Syncing cover art vectors from RAWG.io...")
+    
+    payload = {
+        "games": [],
+        "current": None
+    }
+    
+    if current_game:
+        print("Processing Currently Playing...")
+        payload["current"] = resolve_game(current_game, existing_data)
+        
+    print("Processing Recently Played...")
     for game in top_games:
-        title = str(game.get("finished", "")).strip()
-        date_str = str(game.get("date finished", "")).strip()
-        rating = str(game.get("rating", "")).strip()
-        time_played = str(game.get("hours played", "")).strip() + "h"
-        
-        print(f"  -> resolving artifacts for: {title}")
-        cover_url = get_rawg_cover_url(title)
-        cover_b64 = None
-        if cover_url:
-            cover_b64 = get_base64_image(cover_url)
-            
-        if not cover_b64:
-            # Try to fallback to existing data
-            fallback = next((g for g in existing_data if g.get("title") == title and g.get("cover_url", "").startswith("data:")), None)
-            if fallback:
-                cover_b64 = fallback["cover_url"]
-                print(f"  -> used cached artwork for: {title}")
-            else:
-                # Default placeholder
-                cover_b64 = "https://images.unsplash.com/photo-1538481199705-c710c4e965fc"
-        
-        telemetry_payload.append({
-            "title": title,
-            "date": date_str,
-            "rating": rating,
-            "time": time_played,
-            "cover_url": cover_b64
-        })
+        payload["games"].append(resolve_game(game, existing_data))
         
     print(f"Writing state compilation atomically to {OUTPUT_JSON_PATH}...")
     tmp_path = OUTPUT_JSON_PATH + ".tmp"
     with open(tmp_path, 'w') as f:
-        json.dump(telemetry_payload, f, indent=2)
+        json.dump(payload, f, indent=2)
         f.flush()
         os.fsync(f.fileno())
     os.replace(tmp_path, OUTPUT_JSON_PATH)
