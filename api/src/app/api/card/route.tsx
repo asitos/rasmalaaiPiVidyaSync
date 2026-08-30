@@ -20,7 +20,7 @@ export async function GET() {
           display: 'flex', 
           flexDirection: 'column', 
           width: '240px', 
-          border: '1px solid #7aa2f7',
+          border: '2px solid #7aa2f7',
           backgroundColor: '#16161e',
         }}
       >
@@ -32,7 +32,7 @@ export async function GET() {
             width: '240px',
             height: '320px',
             objectFit: 'cover',
-            borderBottom: '1px solid #7aa2f7',
+            borderBottom: '2px solid #7aa2f7',
           }}
         />
         <div 
@@ -47,7 +47,7 @@ export async function GET() {
             style={{ 
               display: 'flex',
               color: isCurrent ? '#ff9e64' : '#ffffff', 
-              fontSize: '16px', 
+              fontSize: '18px', 
               fontFamily: 'Terminess',
               fontWeight: 700,
               textTransform: 'uppercase',
@@ -61,7 +61,7 @@ export async function GET() {
             style={{ 
               display: 'flex', 
               color: '#9aa5ce', 
-              fontSize: '14px', 
+              fontSize: '16px', 
               fontFamily: 'Terminess',
               fontWeight: 700,
               lineHeight: 1.2,
@@ -81,9 +81,9 @@ export async function GET() {
         marginBottom: '24px', 
         width: '100%', 
         backgroundColor: '#16161e', 
-        border: '1px solid #7aa2f7', 
+        border: '2px solid #7aa2f7', 
         padding: '14px 18px',
-        fontSize: '18px',
+        fontSize: '20px',
         lineHeight: 1.2,
       }}>
         <span style={{ color: '#7aa2f7', fontWeight: 700, marginRight: '12px' }}>asitos@rasmalaai-pi:~$</span>
@@ -99,10 +99,7 @@ export async function GET() {
           display: 'flex',
           flexDirection: 'column',
           backgroundColor: '#1a1b26',
-          paddingTop: '36px',
-          paddingBottom: '36px',
-          paddingLeft: '48px',
-          paddingRight: '48px',
+          padding: '48px',
           fontFamily: 'Terminess',
         }}
       >
@@ -125,8 +122,8 @@ export async function GET() {
         </div>
       </div>,
       {
-        width: 870,
-        height: current ? 1475 : 974,
+        width: 880,
+        height: current ? 1531 : 1018,
         fonts: [
           {
             name: 'Terminess',
