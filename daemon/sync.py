@@ -84,23 +84,34 @@ def get_games_data():
             break
             
     headers = [str(h).strip().lower() for h in raw_data[header_index]]
-    records = [dict(zip(headers, row)) for row in raw_data[header_index + 1:]]
-
-    valid_games = []
+    
+    # Check for a row explicitly labelled "currently playing" anywhere in the sheet
     currently_playing = None
+    for i, row in enumerate(raw_data):
+        # Check if any cell contains "currently playing" (case insensitive)
+        if any("currently playing" in str(cell).strip().lower() for cell in row):
+            # Take the row immediately under it
+            if i + 1 < len(raw_data):
+                target_row = raw_data[i + 1]
+                # Map to headers
+                currently_playing = dict(zip(headers, target_row))
+                break
+
+    records = [dict(zip(headers, row)) for row in raw_data[header_index + 1:]]
+    valid_games = []
     
     for row in records:
-        title = str(row.get(headers[0], "")).strip() # "finished " is usually header 0
-        if not title or title.lower() in ["incomplete / unfinished", "in playlist"]:
+        title = str(row.get(headers[0], "")).strip() 
+        if not title or title.lower() in ["incomplete / unfinished", "in playlist", "currently playing"]:
             continue
             
         date_str = str(row.get("date finished", "")).strip()
-        rolled = str(row.get("rolled credits?", "")).strip().lower()
         
-        # Currently playing heuristic: No date finished, and credits not rolled
-        if not date_str and rolled == "no" and not currently_playing:
-            # We just take the first one that fits this description
-            currently_playing = row
+        # If currently_playing wasn't found via header, fallback to first unfinished
+        if not currently_playing and not date_str:
+            rolled = str(row.get("rolled credits?", "")).strip().lower()
+            if rolled == "no":
+                currently_playing = row
             
         if date_str:
             try:
