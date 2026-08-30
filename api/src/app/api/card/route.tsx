@@ -84,10 +84,10 @@ export async function GET() {
         backgroundColor: '#16161e', 
         border: '2px solid #7aa2f7', 
         padding: '14px 18px',
-        fontSize: '20px',
+        fontSize: '18px', // Slightly smaller to help fit
         lineHeight: 1.2,
       }}>
-        <div style={{ display: 'flex', flexDirection: 'row' }}>
+        <div style={{ display: 'flex', flexDirection: 'row', whiteSpace: 'nowrap' }}>
           <span style={{ color: '#7aa2f7', fontWeight: 700, marginRight: '12px' }}>asitos@rasmalaai-pi:~$</span>
           <span style={{ color: '#ffffff', fontWeight: 700 }}>
             {command}
@@ -95,8 +95,8 @@ export async function GET() {
           </span>
         </div>
         {showTime && (
-          <div style={{ display: 'flex', color: '#7aa2f7', fontSize: '16px', fontWeight: 700 }}>
-            {`[SYNC: ${new Date().toISOString().replace('T', ' ').substring(0, 16)} Z]`}
+          <div style={{ display: 'flex', color: '#7aa2f7', fontSize: '14px', fontWeight: 700, whiteSpace: 'nowrap', marginLeft: '12px' }}>
+            {`[SYNC: ${new Date().toISOString().replace('T', ' ').substring(0, 16)}Z]`}
           </div>
         )}
       </div>
@@ -133,7 +133,7 @@ export async function GET() {
         </div>
       </div>,
       {
-        width: 880,
+        width: 960, // Increased to fit the long prompt + timestamp
         height: current ? 1620 : 1100,
         fonts: [
           {
@@ -167,7 +167,7 @@ export async function GET() {
             0%, 100% { opacity: 1; } 
             50% { opacity: 0; } 
           }
-          text[fill="#fe9e64"] { 
+          path[fill="#fe9e64"] { 
             animation: blink 1s step-end infinite; 
           }
         </style>
