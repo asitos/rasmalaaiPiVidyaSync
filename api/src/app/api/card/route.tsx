@@ -5,8 +5,8 @@ import data from '../../../../telemetry.json';
 
 export async function GET() {
   try {
-    const fontMediumPath = path.join(process.cwd(), 'src/assets/JetBrainsMono-Medium.ttf');
-    const fontBoldPath = path.join(process.cwd(), 'src/assets/JetBrainsMono-Bold.ttf');
+    const fontMediumPath = path.join(process.cwd(), 'src/assets/TerminessNerdFontMono-Regular.ttf');
+    const fontBoldPath = path.join(process.cwd(), 'src/assets/TerminessNerdFontMono-Bold.ttf');
     const fontMedium = fs.readFileSync(fontMediumPath);
     const fontBold = fs.readFileSync(fontBoldPath);
 
@@ -20,7 +20,7 @@ export async function GET() {
           display: 'flex', 
           flexDirection: 'column', 
           width: '240px', 
-          border: '1px solid #414868',
+          border: '1px solid #7aa2f7',
           backgroundColor: '#16161e',
         }}
       >
@@ -32,7 +32,7 @@ export async function GET() {
             width: '240px',
             height: '320px',
             objectFit: 'cover',
-            borderBottom: '1px solid #414868',
+            borderBottom: '1px solid #7aa2f7',
           }}
         />
         <div 
@@ -46,9 +46,9 @@ export async function GET() {
           <div 
             style={{ 
               display: 'flex',
-              color: isCurrent ? '#ff9e64' : '#c0caf5', 
-              fontSize: '15px', 
-              fontFamily: 'JetBrains Mono',
+              color: isCurrent ? '#ff9e64' : '#ffffff', 
+              fontSize: '16px', 
+              fontFamily: 'Terminess',
               fontWeight: 700,
               textTransform: 'uppercase',
               lineHeight: 1.3,
@@ -60,10 +60,10 @@ export async function GET() {
           <div 
             style={{ 
               display: 'flex', 
-              color: '#7aa2f7', 
-              fontSize: '12px', 
-              fontFamily: 'JetBrains Mono',
-              fontWeight: 400,
+              color: '#9aa5ce', 
+              fontSize: '14px', 
+              fontFamily: 'Terminess',
+              fontWeight: 700,
             }}
           >
             {isCurrent ? `[STATUS: PLAYING]  [${game.time.toUpperCase()}]` : `RATING: ${game.rating}  [${game.time.toUpperCase()}]`}
@@ -80,12 +80,12 @@ export async function GET() {
         marginBottom: '24px', 
         width: '100%', 
         backgroundColor: '#16161e', 
-        border: '1px solid #414868', 
-        padding: '12px 16px',
-        fontSize: '15px'
+        border: '1px solid #7aa2f7', 
+        padding: '14px 18px',
+        fontSize: '18px'
       }}>
-        <span style={{ color: '#9ece6a', fontWeight: 700, marginRight: '10px' }}>asitos@pi:~$</span>
-        <span style={{ color: '#c0caf5', fontWeight: 400 }}>{command}</span>
+        <span style={{ color: '#9ece6a', fontWeight: 700, marginRight: '12px' }}>asitos@pi:~$</span>
+        <span style={{ color: '#ffffff', fontWeight: 700 }}>{command}</span>
       </div>
     );
 
@@ -98,7 +98,7 @@ export async function GET() {
           flexDirection: 'column',
           backgroundColor: '#1a1b26',
           padding: '48px',
-          fontFamily: 'JetBrains Mono',
+          fontFamily: 'Terminess',
         }}
       >
         {current && (
@@ -124,13 +124,13 @@ export async function GET() {
         height: current ? 1500 : 980,
         fonts: [
           {
-            name: 'JetBrains Mono',
+            name: 'Terminess',
             data: fontMedium,
             weight: 400,
             style: 'normal',
           },
           {
-            name: 'JetBrains Mono',
+            name: 'Terminess',
             data: fontBold,
             weight: 700,
             style: 'normal',
