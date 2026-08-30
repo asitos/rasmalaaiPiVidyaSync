@@ -19,18 +19,18 @@ export async function GET() {
         style={{ 
           display: 'flex', 
           flexDirection: 'column', 
-          width: '244px', 
+          width: '284px', 
           border: '2px solid #7aa2f7',
           backgroundColor: '#16161e',
         }}
       >
         <img
           src={game.cover_url}
-          width={240}
-          height={320}
+          width={280}
+          height={374}
           style={{
-            width: '240px',
-            height: '320px',
+            width: '280px',
+            height: '374px',
             objectFit: 'cover',
             borderBottom: '2px solid #7aa2f7',
           }}
@@ -84,14 +84,14 @@ export async function GET() {
         backgroundColor: '#16161e', 
         border: '2px solid #7aa2f7', 
         padding: '14px 18px',
-        fontSize: '18px', // Slightly smaller to help fit
+        fontSize: '18px',
         lineHeight: 1.2,
       }}>
         <div style={{ display: 'flex', flexDirection: 'row', whiteSpace: 'nowrap' }}>
           <span style={{ color: '#7aa2f7', fontWeight: 700, marginRight: '12px' }}>asitos@rasmalaai-pi:~$</span>
           <span style={{ color: '#ffffff', fontWeight: 700 }}>
             {command}
-            <span style={{ color: '#fe9e64' }}>_</span>
+            <span style={{ color: '#fe9e64', marginLeft: '4px' }}>█</span>
           </span>
         </div>
         {showTime && (
@@ -110,7 +110,7 @@ export async function GET() {
           display: 'flex',
           flexDirection: 'column',
           backgroundColor: '#1a1b26',
-          padding: '48px',
+          padding: '50px',
           fontFamily: 'Hack',
         }}
       >
@@ -133,8 +133,8 @@ export async function GET() {
         </div>
       </div>,
       {
-        width: 960, // Increased to fit the long prompt + timestamp
-        height: current ? 1620 : 1100,
+        width: 1000,
+        height: current ? 1700 : 1150,
         fonts: [
           {
             name: 'Hack',
@@ -158,7 +158,7 @@ export async function GET() {
         <defs>
           <pattern id="scanlines" patternUnits="userSpaceOnUse" width="4" height="4">
             <rect width="4" height="2" fill="#000000" fill-opacity="0.0" />
-            <rect y="2" width="4" height="2" fill="#000000" fill-opacity="0.15" />
+            <rect y="2" width="4" height="2" fill="#000000" fill-opacity="0.35" />
           </pattern>
         </defs>
         <rect width="100%" height="100%" fill="url(#scanlines)" pointer-events="none" />
