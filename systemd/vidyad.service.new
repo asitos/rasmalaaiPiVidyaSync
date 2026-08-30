@@ -1,0 +1,10 @@
+[Unit]
+Description=rasmalaaiPiVidyaSync github telemetry
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=asitos
+WorkingDirectory=/home/asitos/Projects/rasmalaaiPiVidyaSync
+ExecStart=/home/asitos/Projects/rasmalaaiPiVidyaSync/daemon/run_sync.sh
