@@ -126,7 +126,7 @@ export async function GET() {
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <CommandPrompt command="cat /var/log/vidya/recent.log" />
           <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: '24px', width: '100%' }}>
-            {games.slice(0, 6).map((game: any, index: number) => (
+            {games.slice(0, 9).map((game: any, index: number) => (
               <GameCard key={index} game={game} />
             ))}
           </div>
@@ -134,7 +134,7 @@ export async function GET() {
       </div>,
       {
         width: 1000,
-        height: current ? 1700 : 1150,
+        height: current ? 2238 : 1675,
         fonts: [
           {
             name: 'Hack',

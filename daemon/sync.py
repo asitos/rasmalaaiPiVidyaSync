@@ -122,7 +122,7 @@ def get_games_data():
                 continue 
 
     valid_games.sort(key=lambda x: x['parsed_date'], reverse=True)
-    return valid_games[:6], currently_playing
+    return valid_games[:9], currently_playing
 
 def resolve_game(game, existing_data):
     if not game:
@@ -134,18 +134,17 @@ def resolve_game(game, existing_data):
     time_played = str(game.get("hours played", "")).strip() + "h"
     
     print(f"  -> resolving artifacts for: {title}")
-    cover_url = get_rawg_cover_url(title)
-    cover_b64 = None
-    if cover_url:
-        cover_b64 = get_base64_image(cover_url)
-        
-    if not cover_b64:
-        # Try to fallback to existing data
-        fallback = next((g for g in existing_data if g.get("title") == title and g.get("cover_url", "").startswith("data:")), None)
-        if fallback:
-            cover_b64 = fallback["cover_url"]
-            print(f"  -> used cached artwork for: {title}")
-        else:
+    
+    fallback = next((g for g in existing_data if g.get("title") == title and g.get("cover_url", "").startswith("data:")), None)
+    if fallback:
+        cover_b64 = fallback["cover_url"]
+        print(f"  -> used cached artwork for: {title}")
+    else:
+        cover_url = get_rawg_cover_url(title)
+        cover_b64 = None
+        if cover_url:
+            cover_b64 = get_base64_image(cover_url)
+        if not cover_b64:
             cover_b64 = "https://images.unsplash.com/photo-1538481199705-c710c4e965fc"
     
     return {
